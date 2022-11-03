@@ -26,7 +26,7 @@ public class A14MsgSystem {
 
 		sender1.start();
 		empfaenger1.start();
-		//sender2.start();
+		sender2.start();
 		empfaenger2.start();
 		System.out.println("Geben Sie eine Nachricht ein und drücken Sie Enter: ");
 		Scanner sc = new Scanner(System.in);
