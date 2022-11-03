@@ -18,10 +18,14 @@ public class RechnenClient {
 			System.out.println("Auf Verbindung warten...");
 
 			byte[] adress = new byte[4]; //Laurin im HS-Netzwerk
-			adress[0] = 10;
-			adress[1] = (byte) 199;
-			adress[2] = 16;
-			adress[3] = 127;
+//			adress[0] = 10;
+//			adress[1] = (byte) 199;
+//			adress[2] = 16;
+//			adress[3] = 127;
+			adress[0] = 127;
+			adress[1] = 0;
+			adress[2] = 0;
+			adress[3] = 1;
 
 			//InetAddress localAdress = InetAddress.getLocalHost();
 
@@ -37,8 +41,8 @@ public class RechnenClient {
 				System.out.println("Verbunden mit Server...");
 
 
+				Scanner scanner = new Scanner(System.in);
 				while (true) {
-					Scanner scanner = new Scanner(System.in);
 					System.out.println("Text eingeben: (quit für beenden oder enter für weiter)");
 					String inputScanner = scanner.nextLine();
 					if ("quit".equalsIgnoreCase(inputScanner)) { //bei quit beenden
@@ -48,6 +52,7 @@ public class RechnenClient {
 					System.out.println("Fktnr (1 sum up numbers, 2 count positive numbers, 5 close-connection\n"
 							+ "(Close), 7 server-shutdown (Shutdown) ) eingeben:");
 					short fktZahl = scanner.nextShort();
+					scanner.skip("\\R");
 					boolean closeFlag = false;
 					if (fktZahl == 5 || fktZahl == 7) { //falls FktNr 5 oder 7 --> Keine Parameter Eingabe nötig...
 						closeFlag = true;
@@ -56,17 +61,20 @@ public class RechnenClient {
 
 					System.out.println("Bitte Simulationszeit in ms eingeben (max.32000):");
 					short warteZeit = scanner.nextShort();
+					scanner.skip("\\R");
 
 					short[] paramsArr;
 
 					if (closeFlag != true) {
 						System.out.println("Bitte Anzahl der Paramter eingeben:");
 						short paramAnz = scanner.nextShort();
+						scanner.skip("\\R");
 						paramsArr = new short[paramAnz];
 						//paramsArr mit der gewünschten Anzahl an Parametern füllen
 						for (int i = 0; i < paramAnz; i++) {
 							System.out.println("Parameter " + (i + 1) + ":");
 							short param = scanner.nextShort();
+							scanner.skip("\\R");
 							paramsArr[i] = param;
 
 						}
@@ -108,9 +116,8 @@ public class RechnenClient {
 						int response = inputStream.readInt(); // inputStream einlesen --> Antwort von Server aus InputStream auslesen
 						System.out.println("Von Server berechnetes Resultat: " + response);
 					}
-					scanner.close();
 				}
-
+				scanner.close();
 			}
 
 		} catch (UnknownHostException e) {
