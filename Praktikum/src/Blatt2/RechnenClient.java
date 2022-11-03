@@ -16,7 +16,13 @@ public class RechnenClient {
 
 		try {
 			System.out.println("Auf Verbindung warten...");
-			InetAddress localAdress = InetAddress.getLocalHost(); // adresse
+			byte[] adress = new byte[4];
+			adress[0] = 10;
+			adress[1] = (byte) 199;
+			adress[2] = 16;
+			adress[3] = 127;
+
+			InetAddress localAdress = InetAddress.getByAddress(adress); // adresse
 
 			try (Socket clientSocket = new Socket(localAdress, 8000);
 					//zum antworten an Server
