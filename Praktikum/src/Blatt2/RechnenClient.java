@@ -16,29 +16,35 @@ public class RechnenClient {
 
 		try {
 			System.out.println("Auf Verbindung warten...");
-			byte[] adress = new byte[4];
+
+			byte[] adress = new byte[4]; //Laurin im HS-Netzwerk
 			adress[0] = 10;
 			adress[1] = (byte) 199;
 			adress[2] = 16;
 			adress[3] = 127;
 
-			InetAddress localAdress = InetAddress.getByAddress(adress); // adresse
+			//InetAddress localAdress = InetAddress.getLocalHost();
 
+			InetAddress localAdress = InetAddress.getByAddress(adress);// adresse und port -->muss noch als args mitgegben werden
 			try (Socket clientSocket = new Socket(localAdress, 8000);
-					//zum antworten an Server
-					DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream()); 
-																											
-					//zum lesen der Nachricht von Server																
-					DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream()); 
+				 //zum antworten an Server
+				 DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
+
+				 //zum lesen der Nachricht von Server
+				 DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
 			) {
 
 				System.out.println("Verbunden mit Server...");
-				Scanner scanner = new Scanner(System.in);
+
+
 				while (true) {
+					Scanner scanner = new Scanner(System.in);
 					System.out.println("Text eingeben: (quit für beenden oder enter für weiter)");
 					String inputScanner = scanner.nextLine();
-					if ("quit".equalsIgnoreCase(inputScanner)) //bei quit beenden 
+					if ("quit".equalsIgnoreCase(inputScanner)) { //bei quit beenden
+						System.out.println("Wird beendet...");
 						break;
+					}
 					System.out.println("Fktnr (1 sum up numbers, 2 count positive numbers, 5 close-connection\n"
 							+ "(Close), 7 server-shutdown (Shutdown) ) eingeben:");
 					short fktZahl = scanner.nextShort();
@@ -61,7 +67,7 @@ public class RechnenClient {
 						for (int i = 0; i < paramAnz; i++) {
 							System.out.println("Parameter " + (i + 1) + ":");
 							short param = scanner.nextShort();
-							paramsArr[i] = param; 
+							paramsArr[i] = param;
 
 						}
 					} else { // FltNr 5 und 7 Handling: Texte "Close" und "ShutDown" in das paramsArr Char für Char schreiben
@@ -102,6 +108,7 @@ public class RechnenClient {
 						int response = inputStream.readInt(); // inputStream einlesen --> Antwort von Server aus InputStream auslesen
 						System.out.println("Von Server berechnetes Resultat: " + response);
 					}
+					scanner.close();
 				}
 
 			}
