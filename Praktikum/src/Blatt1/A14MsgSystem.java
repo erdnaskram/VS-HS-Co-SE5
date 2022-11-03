@@ -7,31 +7,26 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class A14MsgSystem {
-	
-	public static int groeßeNachrichtenPuffer;
-	public static A14Nachricht[] nachrichtenPuffer;
-	public static int lesePos = 0; // nötig für Ringspeicher
-	public static int schreibePos = 0; // nötig für Ringspeicher
 	public static boolean stopAnnahme = false; // Stop-Flag für die Annahme von Nachrichten
 
 	public static void main(String[] args) { // Größe Nachrichtenpuffer in args mitgeben z.B 5!!!
-		
+
 		long starttime = System.currentTimeMillis();
 		long endtime;
 
-		groeßeNachrichtenPuffer = Integer.parseInt(args[0]);
+		int groeßeNachrichtenPuffer = Integer.parseInt(args[0]);
 
-		nachrichtenPuffer = new A14Nachricht[groeßeNachrichtenPuffer]; // Puffer für Nachrichten
+		A14NachrichtenPuffer nachrichtenPuffer = new A14NachrichtenPuffer(groeßeNachrichtenPuffer); // Puffer für Nachrichten
 
-		Thread sender1 = new SenderThread("Sender 1");
-		Thread empfaenger1 = new EmpfaengerThread("Empfaenger 1");
-		
-		Thread sender2 = new SenderThread("Sender 2");
-		Thread empfaenger2 = new EmpfaengerThread("Empfaenger 2");
-		
+		Thread sender1 = new SenderThread("Sender 1", nachrichtenPuffer);
+		Thread empfaenger1 = new EmpfaengerThread("Empfaenger 1", nachrichtenPuffer);
+
+		Thread sender2 = new SenderThread("Sender 2", nachrichtenPuffer);
+		Thread empfaenger2 = new EmpfaengerThread("Empfaenger 2", nachrichtenPuffer);
+
 		sender1.start();
 		empfaenger1.start();
-		sender2.start();
+		//sender2.start();
 		empfaenger2.start();
 		System.out.println("Geben Sie eine Nachricht ein und drücken Sie Enter: ");
 		Scanner sc = new Scanner(System.in);
@@ -41,11 +36,11 @@ public class A14MsgSystem {
 		try {
 			sender1.interrupt(); // stoppen Sender, da er keine Nachrichten mehr in den Puffer schreiben darf
 			sender2.interrupt(); // sobald etwas in die Console eingegeben wurde
-			
-		
+
+
 			sender1.join(); // auf Sender und Empf warten
 			sender2.join();
-			
+
 			empfaenger1.join();
 			empfaenger2.join();
 		} catch (InterruptedException e) {
@@ -56,8 +51,22 @@ public class A14MsgSystem {
 
 	}
 
+}
+
+class A14NachrichtenPuffer {
+
+	public int groeßeNachrichtenPuffer;
+	public A14Nachricht[] nachrichtenPuffer;
+	public int lesePos = 0; // nötig für Ringspeicher
+	public int schreibePos = 0; // nötig für Ringspeicher
+
+	public A14NachrichtenPuffer(int groesse) {
+		this.groeßeNachrichtenPuffer = groesse;
+        this.nachrichtenPuffer = new A14Nachricht[groesse];
+	}
+
 	// synchronized, da alle Threads auf gloable Variablen zugreifen....
-	public static synchronized void schreibePuffer(A14Nachricht nachricht) { // nötig für Ringspeicher/Nachrichtenpuffer
+	public synchronized void schreibePuffer(A14Nachricht nachricht) { // nötig für Ringspeicher/Nachrichtenpuffer
 
 		nachrichtenPuffer[schreibePos] = nachricht;
 		//System.out.println("SP "+schreibePos);
@@ -67,41 +76,47 @@ public class A14MsgSystem {
 		} else {
 			schreibePos = 0;
 		}
+        notifyAll();
 
 	}
 
-	public static synchronized ArrayList<Object> lesePuffer() { // nötig für Ringspeicher/Nachrichtenpuffer
+	public synchronized ArrayList<Object> lesePuffer() { // nötig für Ringspeicher/Nachrichtenpuffer
+
+        try {
+            wait();
+        } catch (InterruptedException e) {}
 
 		A14Nachricht nachricht = nachrichtenPuffer[lesePos];
 		//System.out.println("LP "+lesePos);
 		nachrichtenPuffer[lesePos] = null; // nach lesen, Nachricht wieder löschen
-		if(nachricht!=null) { //nur lesePos erhöhen falls Nachricht im Puffer steht 
+		if(nachricht!=null) { //nur lesePos erhöhen falls Nachricht im Puffer steht
 			if (lesePos < groeßeNachrichtenPuffer - 1) {
 				lesePos++;
 
 			} else {
 				lesePos = 0;
 			}
-			
+
 		}
-		
+
 		//list speichert das StopFlag zum Zeitpunkt lesens der Nachricht
 		ArrayList<Object> list = new ArrayList<>();
 		list.add(nachricht);
 		list.add(A14MsgSystem.stopAnnahme);
-		
+
 		return list;
 
 	}
-
 }
 
 class SenderThread extends Thread {
 
 	public String senderName;
+	public A14NachrichtenPuffer puffer;
 
-	public SenderThread(String name) {
+	public SenderThread(String name, A14NachrichtenPuffer puffer) {
 		this.senderName = name;
+		this.puffer = puffer;
 	}
 
 	@Override
@@ -109,13 +124,13 @@ class SenderThread extends Thread {
 		System.out.println("Sender-Thread " + senderName + " gestartet...");
 
 		while (true) {
-			if (A14MsgSystem.stopAnnahme == true) { // prüfung ob Annahme durch Eingabe in Konsole gestoppt wurde
+			if (A14MsgSystem.stopAnnahme) { // prüfung ob Annahme durch Eingabe in Konsole gestoppt wurde
 				break;
 			}
 			int rndmZahl = getRandomNumber(0, 29);
 			A14Nachricht nachricht = new A14Nachricht(senderName, rndmZahl); // Nachricht mit rdnm Zahl generieren
 			try {
-				A14MsgSystem.schreibePuffer(nachricht); // neue Nachricht in NachrichtenPuffer speichern
+				puffer.schreibePuffer(nachricht); // neue Nachricht in NachrichtenPuffer speichern
 				System.out.println("Sender-Thread " + senderName + " erzeugt Nachricht: " + nachricht
 						+ " und speichert sie im NachrichtenPuffer...");
 				if (rndmZahl != 0) {
@@ -125,7 +140,7 @@ class SenderThread extends Thread {
 			} catch (InterruptedException e) {
 				break; // anstelle einer Exception soll einfach der Thread aufhören...
 			}
-			
+
 		}
 
 		System.out.println("Sender-Thread " + senderName + " beendet...");
@@ -141,9 +156,11 @@ class SenderThread extends Thread {
 class EmpfaengerThread extends Thread {
 
 	public String empfaengerName;
+	public A14NachrichtenPuffer puffer;
 
-	public EmpfaengerThread(String name) {
+	public EmpfaengerThread(String name, A14NachrichtenPuffer puffer) {
 		this.empfaengerName = name;
+		this.puffer = puffer;
 	}
 
 	@Override
@@ -151,15 +168,15 @@ class EmpfaengerThread extends Thread {
 		System.out.println("Empfaenger-Thread " + empfaengerName + " gestartet...");
 
 		while (true) {
-			ArrayList<Object> nachrichtenListe = A14MsgSystem.lesePuffer();
+			ArrayList<Object> nachrichtenListe = puffer.lesePuffer();
 			//Liste: stelle 0 = nachricht , stelle 1 = StopAnnahme-Flag
 
 			try {
 				Date date = new Date();
 				long t = date.getTime(); // aus Angabe gegeben....
 				long dauer = t % 1000;
-				System.out.println("Empfaenger-Thread " + empfaengerName + " holt Nachricht: " + nachrichtenListe.get(0)  
-						+ " aus NachrichtenPuffer..."); 
+				System.out.println("Empfaenger-Thread " + empfaengerName + " holt Nachricht: " + nachrichtenListe.get(0)
+						+ " aus NachrichtenPuffer...");
 				//System.out.println("Nachrichtenpuffer:" + Arrays.deepToString(A14MsgSystem.nachrichtenPuffer));
 				if (dauer != 0) {
 					sleep(dauer); // holen und verarbeiten einer nachricht dauert eine gewisse Zeit
@@ -180,10 +197,10 @@ class EmpfaengerThread extends Thread {
 		System.out.println("Empfaenger-Thread " + empfaengerName + " beendet...");
 
 	}
-	
-	
-	
-	
+
+
+
+
 	//TO-DO: Beim empfänger auf Null nachricht vor ausgabe prüfen
 
 }
