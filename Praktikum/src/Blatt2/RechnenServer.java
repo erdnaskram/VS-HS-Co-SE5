@@ -20,7 +20,7 @@ public class RechnenServer {
 				// clientSocket steht für die Verbindung von Server zu Client
 				Socket clientSocket = server.accept(); // When a request is received, the accept method will return a Socket class instance, which represents the connection between that client and the server.
 				System.out.println("Threadnummer:"+idCounter+"    Verbunden mit Client ...");
-				WorkerThread worker = new WorkerThread(clientSocket,idCounter);
+				WorkerThread worker = new WorkerThread(clientSocket,server,idCounter);
 				worker.start();
 //				while (true) {
 //						//hier war alles was nun in der run() ist...
@@ -38,10 +38,12 @@ public class RechnenServer {
 class WorkerThread extends Thread {
 	int id ;
 	Socket clientSocket = null;
+	ServerSocket server = null;
 
-	public WorkerThread(Socket clientSocket, int id) {
+	public WorkerThread(Socket clientSocket, ServerSocket server, int id) {
 		this.id = id;
 		this.clientSocket = clientSocket;
+		this.server=server;
 	}
 
 	@Override
@@ -107,7 +109,7 @@ class WorkerThread extends Thread {
 				case 7: {
 					Thread.sleep(st); // gewünschte Verarbeitungszeit abwarten
 					// Server herunterfahren
-					// server.close();
+					server.close();
 					String shutdownTxt = "";
 					for (short s : params) { // Ausgabetext = ShutDown --> wurde von Client in das Param Array geschrieben
 						shutdownTxt += (char) s; // einzelnen Chars zu String zusammenbringen
