@@ -1,6 +1,6 @@
 package Blatt2;
 
-public class RechnenRequest {
+public class RechnenRequest { //hallo
 
 	short methodenID;
 	short st;
