@@ -12,25 +12,28 @@ public class RechnenClient {
 
 	public static void main(String[] args) throws IOException {
 
+		//ARGS: 127.0.0.1 8000
+
 		System.out.println("Client gestartet...");
 
 		try {
 			System.out.println("Auf Verbindung warten...");
 
-			byte[] adress = new byte[4]; //Laurin im HS-Netzwerk
-//			adress[0] = 10;
-//			adress[1] = (byte) 199;
-//			adress[2] = 16;
-//			adress[3] = 127;
-			adress[0] = 127;
-			adress[1] = 0;
-			adress[2] = 0;
-			adress[3] = 1;
+			String eingabeAdress = args[0];
+			String[] adressStringArr = eingabeAdress.split("\\.");
+
+			byte[] adress = new byte[4]; //Laurin im HS-Netzwerk = 127.0.0.1
+			adress[0] = (byte) Integer.parseInt(adressStringArr[0]);
+			adress[1] = (byte) Integer.parseInt(adressStringArr[1]);
+			adress[2] = (byte) Integer.parseInt(adressStringArr[2]);
+			adress[3] =  (byte) Integer.parseInt(adressStringArr[3]);
 
 			//InetAddress localAdress = InetAddress.getLocalHost();
 
-			InetAddress localAdress = InetAddress.getByAddress(adress);// adresse und port -->muss noch als args mitgegben werden
-			try (Socket clientSocket = new Socket(localAdress, 8000);
+			InetAddress localAdress = InetAddress.getByAddress(adress);// adresse und port -->werden als args mitgegben werden!!!!
+
+			//bsp port = 8000
+			try (Socket clientSocket = new Socket(localAdress, Integer.parseInt(args[1]));
 				 //zum antworten an Server
 				 DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
 

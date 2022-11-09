@@ -34,10 +34,6 @@ public class A14MsgSystem {
 		sc.nextLine();
 		stopAnnahme = true; // da Eingabe getätigt wurde, wird die Annahme von Nachrichten gestoppt
 		try {
-			sender1.interrupt(); // stoppen Sender, da er keine Nachrichten mehr in den Puffer schreiben darf
-			sender2.interrupt(); // sobald etwas in die Console eingegeben wurde
-
-
 			sender1.join(); // auf Sender und Empf warten
 			sender2.join();
 
@@ -65,6 +61,10 @@ class A14NachrichtenPuffer {
         this.nachrichtenPuffer = new A14Nachricht[groesse];
 	}
 
+	public synchronized void sendNotifiy(){
+		notify();
+	}
+
 	// synchronized, da alle Threads auf gloable Variablen zugreifen....
 	public synchronized void schreibePuffer(A14Nachricht nachricht) { // nötig für Ringspeicher/Nachrichtenpuffer
 
@@ -76,20 +76,20 @@ class A14NachrichtenPuffer {
 		} else {
 			schreibePos = 0;
 		}
-        notifyAll();
+        notify(); //beendet wait von lesePuffer
 
 	}
 
 	public synchronized ArrayList<Object> lesePuffer() { // nötig für Ringspeicher/Nachrichtenpuffer
 
         try {
-            wait();
+            wait(); //warten bis schreiber etwas in Puffer schreibt
         } catch (InterruptedException e) {}
 
 		A14Nachricht nachricht = nachrichtenPuffer[lesePos];
 		//System.out.println("LP "+lesePos);
 		nachrichtenPuffer[lesePos] = null; // nach lesen, Nachricht wieder löschen
-		if(nachricht!=null) { //nur lesePos erhöhen falls Nachricht im Puffer steht
+		if(nachricht!=null) { //nur lesePos erhöhen, falls Nachricht im Puffer steht
 			if (lesePos < groeßeNachrichtenPuffer - 1) {
 				lesePos++;
 
@@ -125,6 +125,11 @@ class SenderThread extends Thread {
 
 		while (true) {
 			if (A14MsgSystem.stopAnnahme) { // prüfung ob Annahme durch Eingabe in Konsole gestoppt wurde
+				System.out.println(Arrays.deepToString(this.puffer.nachrichtenPuffer));
+				for (int i = 0; i < this.puffer.nachrichtenPuffer.length; i++) {
+					this.puffer.sendNotifiy();
+				}
+				System.out.println(Arrays.deepToString(this.puffer.nachrichtenPuffer));
 				break;
 			}
 			int rndmZahl = getRandomNumber(0, 29);
