@@ -48,11 +48,13 @@ class WorkerThread extends Thread {
 
 	@Override
 	public void run() {
-		try {
-			// zum lesen der Nachricht von Client
-			DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
-			// zum antworten an Client
-			DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
+		try(
+				// zum lesen der Nachricht von Client
+				DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
+				// zum antworten an Client
+				DataOutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
+				) {
+
 
 			while(true) {
 				// von Client auf outputStream(für Server dann inputStream) geschriebene Daten lesen
