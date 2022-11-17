@@ -6,7 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-//cd /Users/laurin/eclipse/Workspace/VS/src/Blatt3/out/production/Blatt3
+//cd /Users/laurin/IdeaProjects/VS-HS-Co-SE5/out/production/VS-HS-Co-SE5
 //rmiregistry in terminal!!!
 
 public class FibServer extends UnicastRemoteObject implements FibInterface {

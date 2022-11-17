@@ -8,12 +8,14 @@ public class TokenClient {
 	 public static void main(String[] args) {
 
 	        try {
-	        	
-	        	//"rmi://127.0.0.1/random/token" in ARGS mitgegben!!!!
+
+				//TODO mit args geht noch nicht ...
+
+	        	//rmi://127.0.0.1/random/token in ARGS mitgegben!!!!
 	        	
 	        	//Rmi-Reg Adresse festlegen
-	        	String remoObjName = args[0];
-	        	//String remoObjName = "rmi://127.0.0.1/token";
+	        	//String remoObjName = args[0];
+	        	String remoObjName = "rmi://127.0.0.1/token";
 	        	
 	        	//obj anfrangen aus Register (ro=externe Objektreferenz)
 	        	TokenInterface ro  = (TokenInterface) Naming.lookup(remoObjName);

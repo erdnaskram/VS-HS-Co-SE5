@@ -6,6 +6,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
+//cd /Users/laurin/IdeaProjects/VS-HS-Co-SE5/out/production/VS-HS-Co-SE5
+//rmiregistry in terminal!!!
 public class TokenFibServer extends UnicastRemoteObject implements TokenFibInterface {
 
 	private static String servername;

@@ -6,8 +6,8 @@ import Blatt3Aufgabe4.A1.TokenServer;
 import Blatt3Aufgabe4.A2.FibServer;
 
 public class TokenFibMain {
-	
-	//cd /Users/laurin/eclipse/Workspace/VS/src/Blatt3/out/production/Blatt3
+
+	//cd /Users/laurin/IdeaProjects/VS-HS-Co-SE5/out/production/VS-HS-Co-SE5
 	//rmiregistry in terminal!!!
 
 	public static void main(String[] args) throws Exception {
