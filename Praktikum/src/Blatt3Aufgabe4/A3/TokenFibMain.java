@@ -2,8 +2,8 @@ package Blatt3Aufgabe4.A3;
 
 import java.rmi.Naming;
 
-import A1.TokenServer;
-import A2.FibServer;
+import Blatt3Aufgabe4.A1.TokenServer;
+import Blatt3Aufgabe4.A2.FibServer;
 
 public class TokenFibMain {
 	

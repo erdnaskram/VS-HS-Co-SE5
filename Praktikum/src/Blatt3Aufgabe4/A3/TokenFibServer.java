@@ -6,9 +6,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import A1.RAIBCResponse;
-import A2.EinfachVerketteListe;
-import A2.ListElement;
+import Blatt3Aufgabe4.A1.RAIBCResponse;
+import Blatt3Aufgabe4.A2.EinfachVerketteListe;
+import Blatt3Aufgabe4.A2.ListElement;
 
 public class TokenFibServer extends UnicastRemoteObject implements TokenFibInterface {
 
