@@ -1,10 +1,11 @@
-package Blatt3; //rmilernen.tokenfibon !!!
+package Blatt3Aufgabe4.A1; //rmilernen.tokenfibon !!!
 
 import java.net.MalformedURLException;
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 
 // cd /Users/laurin/eclipse/Workspace/VS/src/Blatt3/out/production/Blatt3
+// cd /Users/laurin/eclipse/Workspace/VS/bin
 //rmiregistry in terminal!!!
 
 @SuppressWarnings("serial")

@@ -1,4 +1,4 @@
-package Blatt3;
+package Blatt3Aufgabe4.A1;
 
 import java.rmi.Naming;
 import java.util.Arrays;
