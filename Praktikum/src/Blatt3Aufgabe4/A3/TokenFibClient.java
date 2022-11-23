@@ -97,6 +97,10 @@ public class TokenFibClient {
 			EinfachVerketteListe responseRmiConvertToList2 = rotokenfib.rmiConvertToList(array2);
 			System.out.println("token-fib: responseRmiConvertToList: " + responseRmiConvertToList2.toString() + " ID:"+rotokenfib.hashCode());
 
+			rofib.rmiShutdown();
+			rotokenfib.rmiShutdown();
+			rotoken.rmiShutdown();
+
 		} catch (Exception e) {
 			System.err.println("Client exception: " + e.toString());
 			e.printStackTrace();
