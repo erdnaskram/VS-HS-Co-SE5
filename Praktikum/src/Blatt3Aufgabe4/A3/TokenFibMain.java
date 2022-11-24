@@ -4,6 +4,7 @@ import java.rmi.Naming;
 
 import Blatt3Aufgabe4.A1.TokenServer;
 import Blatt3Aufgabe4.A2.FibServer;
+import Blatt3Aufgabe4.A3.TokenFibServer;
 
 public class TokenFibMain {
 

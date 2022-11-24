@@ -15,7 +15,7 @@ public class TokenFibServer extends UnicastRemoteObject implements TokenFibInter
 	private static String servername;
 	private long longIncrement = 0;
 
-	protected TokenFibServer() throws RemoteException {
+	public TokenFibServer() throws RemoteException {
 		super();
 		// TODO Auto-generated constructor stub
 	}

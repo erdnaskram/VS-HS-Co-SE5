@@ -61,7 +61,7 @@ class A14NachrichtenPuffer {
         this.nachrichtenPuffer = new A14Nachricht[groesse];
 	}
 
-	public synchronized void sendNotifiy(){
+	public void sendNotifiy(){
 		notify();
 	}
 
