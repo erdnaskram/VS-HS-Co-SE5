@@ -1,5 +1,5 @@
 package
-        Blatt3Aufgabe4.A1;
+        Blatt3Aufgabe1;
 
 
 import java.io.Serializable;

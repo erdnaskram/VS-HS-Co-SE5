@@ -1,4 +1,4 @@
-package Blatt3Aufgabe4.A3;
+package Blatt3Aufgabe3;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -6,9 +6,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-import Blatt3Aufgabe4.A1.RAIBCResponse;
-import Blatt3Aufgabe4.A2.EinfachVerketteListe;
-import Blatt3Aufgabe4.A2.ListElement;
+import Blatt3Aufgabe1.RAIBCResponse;
+import Blatt3Aufgabe2.EinfachVerketteListe;
+import Blatt3Aufgabe2.ListElement;
 
 public class TokenFibServer extends UnicastRemoteObject implements TokenFibInterface {
 

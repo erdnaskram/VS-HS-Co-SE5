@@ -1,4 +1,4 @@
-package Blatt3Aufgabe4.A1; //rmilernen.tokenfibon !!!
+package Blatt3Aufgabe1; //rmilernen.tokenfibon !!!
 
 import java.net.MalformedURLException;
 import java.rmi.*;

@@ -1,12 +1,12 @@
-package Blatt3Aufgabe4.A3;
+package Blatt3Aufgabe3;
 
 import java.rmi.Naming;
 import java.util.Arrays;
 
-import Blatt3Aufgabe4.A1.RAIBCResponse;
-import Blatt3Aufgabe4.A1.TokenInterface;
-import Blatt3Aufgabe4.A2.EinfachVerketteListe;
-import Blatt3Aufgabe4.A2.FibInterface;
+import Blatt3Aufgabe1.RAIBCResponse;
+import Blatt3Aufgabe1.TokenInterface;
+import Blatt3Aufgabe2.EinfachVerketteListe;
+import Blatt3Aufgabe2.FibInterface;
 
 public class TokenFibClient {
 

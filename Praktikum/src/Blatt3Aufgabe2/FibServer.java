@@ -1,4 +1,4 @@
-package Blatt3Aufgabe4.A2;
+package Blatt3Aufgabe2;
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
