@@ -126,8 +126,10 @@ class SenderThread extends Thread {
             try {
                 System.out.println("Sender-Thread " + senderName + " erzeugt Nachricht: " + nachricht
                         + " und speichert sie im NachrichtenPuffer...");
-                //noinspection BusyWait
-                sleep((long) randomZahl * randomZahl); // Von Prof gewünscht!
+                if (randomZahl > 0) {
+                    //noinspection BusyWait
+                    sleep((long) randomZahl * randomZahl); // Von Prof gewünscht!
+                }
                 puffer.schreibePuffer(nachricht);
             } catch (InterruptedException e) {
                 break;
@@ -162,8 +164,10 @@ class EmpfaengerThread extends Thread {
                 Date date = new Date();
                 long t = date.getTime();
                 long dauer = t % 1000;
-                //noinspection BusyWait
-                sleep(dauer); // Gewollt von Prof!
+                if (dauer > 0) {
+                    //noinspection BusyWait
+                    sleep(dauer); // Gewollt von Prof!
+                }
 
                 System.out.println("Empfaenger-Thread " + empfaengerName + " holt Nachricht: " + nachricht
                         + " aus NachrichtenPuffer...");
