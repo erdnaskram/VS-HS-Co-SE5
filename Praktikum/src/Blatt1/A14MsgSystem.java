@@ -1,7 +1,6 @@
 package Blatt1;
 //package threadslernen;
 
-import java.awt.desktop.ScreenSleepEvent;
 import java.util.*;
 
 public class A14MsgSystem {
@@ -13,10 +12,10 @@ public class A14MsgSystem {
         long starttime = System.currentTimeMillis();
         long endtime;
 
-        int groeßeNachrichtenPuffer = Integer.parseInt(args[0]);
+        int groesseNachrichtenPuffer = Integer.parseInt(args[0]);
 
 
-        A14NachrichtenPuffer nachrichtenPuffer = new A14NachrichtenPuffer(groeßeNachrichtenPuffer); // Puffer für Nachrichten
+        A14NachrichtenPuffer nachrichtenPuffer = new A14NachrichtenPuffer(groesseNachrichtenPuffer); // Puffer für Nachrichten
 
         Thread sender1 = new SenderThread("Sender 1", nachrichtenPuffer);
         Thread empfaenger1 = new EmpfaengerThread("Empfaenger 1", nachrichtenPuffer);
@@ -55,7 +54,7 @@ public class A14MsgSystem {
 
 class A14NachrichtenPuffer {
 
-    public int groeßeNachrichtenPuffer;
+    public int groesseNachrichtenPuffer;
     public A14Nachricht[] nachrichtenPuffer;
     public int lesePos = 0; // nötig für Ringspeicher
     public int schreibePos = 0; // nötig für Ringspeicher
@@ -63,7 +62,7 @@ class A14NachrichtenPuffer {
     public boolean ersterSchreibevorgang = true;
 
     public A14NachrichtenPuffer(int groesse) {
-        this.groeßeNachrichtenPuffer = groesse;
+        this.groesseNachrichtenPuffer = groesse;
         this.nachrichtenPuffer = new A14Nachricht[groesse];
     }
 
@@ -80,7 +79,7 @@ class A14NachrichtenPuffer {
 
         nachrichtenPuffer[schreibePos] = nachricht;
         //System.out.println("SP "+schreibePos);
-        if (schreibePos < groeßeNachrichtenPuffer - 1) {
+        if (schreibePos < groesseNachrichtenPuffer - 1) {
             schreibePos++;
         } else {
             schreibePos = 0;
@@ -109,7 +108,7 @@ class A14NachrichtenPuffer {
 
         nachrichtenPuffer[lesePos] = null; // nach lesen, Nachricht wieder löschen
         if (nachricht != null) { //nur lesePos erhöhen, falls Nachricht im Puffer steht
-            if (lesePos < groeßeNachrichtenPuffer - 1) {
+            if (lesePos < groesseNachrichtenPuffer - 1) {
                 lesePos++;
             } else {
                 lesePos = 0;
