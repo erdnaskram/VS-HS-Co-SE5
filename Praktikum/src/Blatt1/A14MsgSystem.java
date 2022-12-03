@@ -124,11 +124,11 @@ class SenderThread extends Thread {
             int randomZahl = getRandomNumber(0, 29);
             A14Nachricht nachricht = new A14Nachricht(senderName, randomZahl);
             try {
-                puffer.schreibePuffer(nachricht);
-                //noinspection BusyWait
-                sleep((long) randomZahl * randomZahl); // Von Prof gewünscht!
                 System.out.println("Sender-Thread " + senderName + " erzeugt Nachricht: " + nachricht
                         + " und speichert sie im NachrichtenPuffer...");
+                //noinspection BusyWait
+                sleep((long) randomZahl * randomZahl); // Von Prof gewünscht!
+                puffer.schreibePuffer(nachricht);
             } catch (InterruptedException e) {
                 break;
             }
