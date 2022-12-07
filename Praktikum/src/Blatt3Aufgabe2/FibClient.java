@@ -13,11 +13,19 @@ public class FibClient {
 		
 		try {
         	//Rmi-Reg Adresse festlegen
-        	String remoObjName = "rmi://127.0.0.1/fib";
+            String remoObjName = args[0];
+        	//String remoObjName = "rmi://127.0.0.1/fib";
         	
         	//obj anfrangen aus Register (ro=externe Objektreferenz)
         	FibInterface ro  = (FibInterface) Naming.lookup(remoObjName);
-        	
+
+
+            if(args.length > 1){
+                System.out.println("rmiShutdown aufrufen");
+                ro.rmiShutdown();
+                return;
+            }
+
         	//Fkt von Server aufrufen
             long responseRmiFibon = ro.rmiFibon(Integer.parseInt(args[0]));
             System.out.println("responseRmiFibon: " + responseRmiFibon);
@@ -34,10 +42,7 @@ public class FibClient {
            
             EinfachVerketteListe responseRmiConvertToList = ro.rmiConvertToList(array);
             System.out.println("responseRmiConvertToList: " + responseRmiConvertToList.toString());
-         
-            
-            
-            
+
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
             e.printStackTrace();

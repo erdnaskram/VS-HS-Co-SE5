@@ -22,9 +22,14 @@ public class TokenFibClient {
 			TokenFibInterface rotokenfib = (TokenFibInterface) Naming.lookup(remoObjNameTokenFib);
 
 			
-			
-			
-			
+			if(args.length > 0){
+				System.out.println("rmiShutdown für alle drei aufrufen");
+				rotoken.rmiShutdown();
+				rofib.rmiShutdown();
+				rotokenfib.rmiShutdown();
+				return;
+			}
+
 			// Fkt von Server aufrufen
 			int responseStrlen = rotoken.rmiStrlen("TEST");
 			System.out.println("token: responseStrlen: " + responseStrlen + " ID:"+rotoken.hashCode());

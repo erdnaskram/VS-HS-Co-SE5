@@ -70,15 +70,12 @@ public class TokenServer extends UnicastRemoteObject implements TokenInterface{
     @Override
     public void rmiShutdown() throws RemoteException{
         try {
-        	
         	//Löschen aller Remote-Objekte des RMI-Servers aus der RMI-Registry mit Naming.unbind().
 			Naming.unbind("rmi://127.0.0.1/token");
-			
-			
+
 			//Löschen aller Remote-Objekts des RMI-Servers aus der RMI-Runtime mit UnicastRemoteObject.unexportObject().
 			UnicastRemoteObject.unexportObject(this, false);
-			
-			
+
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {

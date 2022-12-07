@@ -1,0 +1,11 @@
+﻿a04rmi-lsg
+
+Vorgehen für Aufruf von RMI-Registry, RMI-Server und RMI-Clients
+→ alles nacheinander in Shellskript enthalten
+
+Remote-Objektname (RO)******Implementierungsklasse des RO******Liste der Interfaces des RO
+token			    TokenServer                        TokenInterface
+fib                         FibServer                          FibInterface
+a3/token		    TokenServer                        TokenInterface
+a3/fib                      FibServer                          FibInterface
+a3/TokenFib                 TokenFibServer                     TokenFibInterface (extends TokenInterface, FibInterface)
