@@ -89,6 +89,7 @@ class A14NachrichtenPuffer {
         while (isEmpty()) {
             try {
                 wait();
+                // ToDo: Wenn gestoppt + nur ein Inhalt aber zwei wartende Leser => abfangen!
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
