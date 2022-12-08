@@ -19,7 +19,7 @@ public class RechnenServer {
 				System.out.println("Warte auf Verbindungsanfrage...");
 				// clientSocket steht für die Verbindung von Server zu Client
 				Socket clientSocket = server.accept(); // When a request is received, the accept method will return a Socket class instance, which represents the connection between that client and the server.
-				System.out.println("Threadnummer:"+idCounter+"    Verbunden mit Client ...");
+				System.out.println("Threadnummer: "+idCounter+"    Verbunden mit Client ...");
 				WorkerThread worker = new WorkerThread(clientSocket,server,idCounter);
 				worker.start();
 //				while (true) {
@@ -61,7 +61,7 @@ class WorkerThread extends Thread {
 				// Protokoll konform lesen
 				System.out.println("Lesen der Params etc.... " + "Threadnummer: "+this.id);
 				short methodenID = inputStream.readShort();
-				short st = inputStream.readShort();
+				short st = inputStream.readShort(); //sleep time
 				short paramsLength = inputStream.readShort();
 				short[] params = new short[paramsLength];
 				for (int i = 0; i < paramsLength; i++) {

@@ -22,7 +22,7 @@ public class RechnenClient {
 			String eingabeAdress = args[0];
 			String[] adressStringArr = eingabeAdress.split("\\.");
 
-			byte[] adress = new byte[4]; //Laurin im HS-Netzwerk = 127.0.0.1
+			byte[] adress = new byte[4]; //user lokal = 127.0.0.1
 			adress[0] = (byte) Integer.parseInt(adressStringArr[0]);
 			adress[1] = (byte) Integer.parseInt(adressStringArr[1]);
 			adress[2] = (byte) Integer.parseInt(adressStringArr[2]);
@@ -30,7 +30,7 @@ public class RechnenClient {
 
 			//InetAddress localAdress = InetAddress.getLocalHost();
 
-			InetAddress localAdress = InetAddress.getByAddress(adress);// adresse und port -->werden als args mitgegben werden!!!!
+			InetAddress localAdress = InetAddress.getByAddress(adress);// adresse und port -->werden als args mitgegben!!!!
 
 			//bsp port = 8000
 			try (Socket clientSocket = new Socket(localAdress, Integer.parseInt(args[1]));
@@ -55,31 +55,29 @@ public class RechnenClient {
 					System.out.println("Fktnr (1 sum up numbers, 2 count positive numbers, 5 close-connection\n"
 							+ "(Close), 7 server-shutdown (Shutdown) ) eingeben:");
 					short fktZahl = scanner.nextShort();
-					scanner.skip("\\R");
+					scanner.skip("\\R"); //Enter-Eingabe ignorieren
 					boolean closeFlag = false;
 					if (fktZahl == 5 || fktZahl == 7) { //falls FktNr 5 oder 7 --> Keine Parameter Eingabe nötig...
 						closeFlag = true;
-
 					}
 
 					System.out.println("Bitte Simulationszeit in ms eingeben (max.32000):");
 					short warteZeit = scanner.nextShort();
-					scanner.skip("\\R");
+					scanner.skip("\\R"); //Enter-Eingabe ignorieren
 
 					short[] paramsArr;
 
 					if (closeFlag != true) {
 						System.out.println("Bitte Anzahl der Paramter eingeben:");
 						short paramAnz = scanner.nextShort();
-						scanner.skip("\\R");
+						scanner.skip("\\R"); //Enter-Eingabe ignorieren
 						paramsArr = new short[paramAnz];
 						//paramsArr mit der gewünschten Anzahl an Parametern füllen
 						for (int i = 0; i < paramAnz; i++) {
 							System.out.println("Parameter " + (i + 1) + ":");
 							short param = scanner.nextShort();
-							scanner.skip("\\R");
+							scanner.skip("\\R"); //Enter-Eingabe ignorieren
 							paramsArr[i] = param;
-
 						}
 					} else { // FltNr 5 und 7 Handling: Texte "Close" und "ShutDown" in das paramsArr Char für Char schreiben
 						String txt;
@@ -94,7 +92,6 @@ public class RechnenClient {
 						for (int i = 0; i < arrChar.length; i++) {
 							paramsArr[i] = (short) arrChar[i];
 						}
-
 					}
 
 					RechnenRequest request = new RechnenRequest();
@@ -122,12 +119,9 @@ public class RechnenClient {
 				}
 				scanner.close();
 			}
-
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
-
 }
