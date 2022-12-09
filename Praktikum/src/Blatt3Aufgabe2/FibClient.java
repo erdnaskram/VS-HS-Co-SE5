@@ -20,14 +20,14 @@ public class FibClient {
         	FibInterface ro  = (FibInterface) Naming.lookup(remoObjName);
 
 
-            if(args.length > 1){
+            if(args.length > 2){
                 System.out.println("rmiShutdown aufrufen");
                 ro.rmiShutdown();
                 return;
             }
 
         	//Fkt von Server aufrufen
-            long responseRmiFibon = ro.rmiFibon(Integer.parseInt(args[0]));
+            long responseRmiFibon = ro.rmiFibon(Integer.parseInt(args[1]));
             System.out.println("responseRmiFibon: " + responseRmiFibon);
 
             long[] responseRmiFibonArray = ro.rmiFibonArray(5);
